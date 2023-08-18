@@ -20,12 +20,25 @@ const db = [
 ];
 
 // Obtener todos los productos
+// / getProducts -> Regresar TODOS LOS PRODUCTOS
+// / getProducts ? -> Regresar UN PRODUCTO EN PARTICULAR
+
+// QUERY STRING:
+// ? Key1 = valor1 & valor2 
 app.get("/getProducts", function (request, response) {
 	// Envia toda la lista como recurso
 	// al cliente
 
-	// .json() convierte los objetos de JS a "JSON"
-	response.json(db);
+	if (request.query.name) {
+		const { name } = request.query;
+		const filtered = db.filter((x) =>
+			x.name.toLowerCase().includes(name.toLowerCase())
+		);
+		response.json(filtered);
+	} else {
+		// .json() convierte los objetos de JS a "JSON"
+		response.json(db);
+	}
 });
 
 // Un API tiene 4 maneras de recibir parámetros
